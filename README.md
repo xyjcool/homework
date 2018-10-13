@@ -10,7 +10,7 @@ ___
 ##### `第二次提交：增加README文本and按要求增加源homework01.pro文件，增强程序可读性。`
 
 ___
-##### 2.lab01。提交日期：2018-10-13，实现实验一要求的功能，共提交了2次。
+##### 2.lab01。提交日期：2018-10-13，实现实验一要求的功能，共提交了3次。
 ##### `第一次提交：实现功能如下：`
 - ###### 编写vector数组and sort函数，初步实现存入学生信息并且按要求排序。
 - ###### 修改bug"in function main" and "a function-definition is not allowed here before"
