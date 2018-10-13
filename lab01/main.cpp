@@ -24,12 +24,10 @@ using namespace std;
         vec.push_back(stu);
     }
 
-
     // 按照年龄进行排序 降序
     bool sortByName(const students &s1, const students &s2){
         return s1.name > s2.name;
     }
-
 
     // 按照课程1进行排序 降序
     bool sortByCourse1(const students &s1, const students &s2){
@@ -40,7 +38,6 @@ using namespace std;
     bool sortByCourse2(const students &s1, const students &s2){
         return s1.course2 > s2.course2;
     }
-
 
     int main(int argc, char *argv[])
     {
