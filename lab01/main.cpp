@@ -1,56 +1,85 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include<stdio.h>
+#include <QDebug>
 #include<algorithm>
 #include<vector>
 #include<iostream>
 using namespace std;
-#include <QDebug>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    class students{
+    public:
+        int number;
+        string name;
+        int course1;
+        int course2;
+    };
 
-    void addStudents(vector<students> &vec, int age, string name){
+    void addStudents(vector<students> &vec, int number, string name, int course1, int course2){
         students stu;
-        stu.age = age;
+        stu.number = number;
         stu.name = name;
+        stu.course1 = course1;
+        stu.course2 = course2;
         vec.push_back(stu);
-
-    }
-
-    // 按照年龄进行排序 升序
-    bool sortByAge(const students &s1, const students &s2){
-        return s1.age < s2.age;
     }
 
 
-    // 先按照年龄进行排序 年纪一样 按照姓名排序
-    bool sortByAll(const students &s1, const students &s2){
-        if(s1.age < s2.age) return true;
-        else if(s1.age > s2.age) return false;
-        else return s1.name < s2.name;
+    // 按照年龄进行排序 降序
+    bool sortByName(const students &s1, const students &s2){
+        return s1.name > s2.name;
     }
-    int main(){
+
+
+    // 按照课程1进行排序 降序
+    bool sortByCourse1(const students &s1, const students &s2){
+        return s1.course1 > s2.course1;
+    }
+
+    // 按照课程2进行排序 降序
+    bool sortByCourse2(const students &s1, const students &s2){
+        return s1.course2 > s2.course2;
+    }
+
+
+    int main(int argc, char *argv[])
+    {
+        QApplication a(argc, argv);
+        MainWindow w;
+        w.show();
+
         vector<students> vec;
-        addStudents(vec, 20, "zhangming");
-        addStudents(vec, 20, "xiaoming");
-        addStudents(vec, 20, "xiaoming2");
-        addStudents(vec, 23, "xiaohong");
-        addStudents(vec, 22, "xiaofei");
-        addStudents(vec, 27, "xiaogang");
-        cout << "排序前:" << endl;
-        for(vector<students>::iterator iter = vec.begin(); iter != vec.end(); ++iter){
-            cout << (*iter).age << " " << (*iter).name << endl;
+        addStudents(vec, 1403140103, "武松",88, 80);
+        addStudents(vec, 1403140101, "林冲",82, 76);
+        addStudents(vec, 1403130209, "鲁智深",80, 72);
+        addStudents(vec, 1403140102, "宋江",76, 85);
+
+        //迭代器 iterato,输出
+        QVector<students>::iterator it;
+
+        qDebug()<< "排序前" << endl;
+        for (it = vec.begin(); it != vec.end(); it++){
+                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
         }
-        sort(vec.begin(), vec.end(), sortByAll);
-        cout << "排序后:" << endl;
-        for(vector<students>::iterator iter = vec.begin(); iter != vec.end(); ++iter){
-            cout << (*iter).age << " " << (*iter).name << endl;
+
+        sort(vec.begin(), vec.end(), sortByName);
+        cout << "按姓名排序后:" << endl;
+        for (it = vec.begin(); it != vec.end(); it++){
+                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
         }
+
+        sort(vec.begin(), vec.end(), sortByCourse1);
+        cout << "按课程1排序后:" << endl;
+        for (it = vec.begin(); it != vec.end(); it++){
+                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
+        }
+
+        sort(vec.begin(), vec.end(), sortByCourse2);
+        cout << "按课程2排序后:" << endl;
+        for (it = vec.begin(); it != vec.end(); it++){
+                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
+        }
+        return a.exec();
     }
 
-    return a.exec();
-}
+
