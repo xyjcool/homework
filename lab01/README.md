@@ -4,8 +4,11 @@
 ***
 ##### `第一次提交：实现功能如下：`
 - ###### 编写vector数组and sort函数，初步实现存入学生信息并且按要求排序。
-- ###### 修改bug，
+- ###### 修改bug"in function main" and "a function-definition is not allowed here before"
 
 ##### `第二次提交：实现功能如下：`
-- ###### 修改bug，
+- ###### 修改bug"cannot convert std.....",vector使用过程中迭代器指针转化报错。
 - ###### 增加README文本，增强程序可读性。`
+
+##### `第三次提交：实现功能如下：`
+- ###### 修改bug
