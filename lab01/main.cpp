@@ -3,19 +3,19 @@
 #include<stdio.h>
 #include <QDebug>
 #include<algorithm>
-#include<vector>
+#include<Qvector>
 #include<iostream>
 using namespace std;
 
     class students{
     public:
         int number;
-        string name;
+        QString name;
         int course1;
         int course2;
     };
 
-    void addStudents(vector<students> &vec, int number, string name, int course1, int course2){
+    void addStudents(QVector<students> &vec, int number, QString name, int course1, int course2){
         students stu;
         stu.number = number;
         stu.name = name;
@@ -24,7 +24,7 @@ using namespace std;
         vec.push_back(stu);
     }
 
-    // 按照年龄进行排序 降序
+    // 按照进行排序 降序
     bool sortByName(const students &s1, const students &s2){
         return s1.name > s2.name;
     }
@@ -45,7 +45,7 @@ using namespace std;
         MainWindow w;
         w.show();
 
-        vector<students> vec;
+        QVector<students> vec;
         addStudents(vec, 1403140103, "武松",88, 80);
         addStudents(vec, 1403140101, "林冲",82, 76);
         addStudents(vec, 1403130209, "鲁智深",80, 72);
@@ -54,25 +54,27 @@ using namespace std;
         //迭代器 iterato,输出
         QVector<students>::iterator it;
 
+
         qDebug()<< "排序前" << endl;
-        for (it = vec.begin(); it != vec.end(); it++){
-                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
-        }
+        for (it = vec.begin(); it != vec.end(); it++)
+            {
+               qDebug() << it ->number << it->name << it->course1 << it->course2 <<endl;
+            }
 
         sort(vec.begin(), vec.end(), sortByName);
-        cout << "按姓名排序后:" << endl;
+        qDebug() << "按姓名排序后:" << endl;
         for (it = vec.begin(); it != vec.end(); it++){
-                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
+                   qDebug() << it ->number << it->name << it->course1 << it->course2 <<endl;
         }
 
         sort(vec.begin(), vec.end(), sortByCourse1);
-        cout << "按课程1排序后:" << endl;
+        qDebug() << "按课程1排序后:" << endl;
         for (it = vec.begin(); it != vec.end(); it++){
-                   qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
+                   qDebug() << it ->number << it->name << it->course1 << it->course2 <<endl;
         }
 
         sort(vec.begin(), vec.end(), sortByCourse2);
-        cout << "按课程2排序后:" << endl;
+        qDebug() << "按课程2排序后:" << endl;
         for (it = vec.begin(); it != vec.end(); it++){
                    qDebug()<< it ->number << it->name << it->course1 << it->course2 <<endl;
         }
