@@ -56,8 +56,7 @@ using namespace std;
 
 
         qDebug()<< "排序前" << endl;
-        for (it = vec.begin(); it != vec.end(); it++)
-            {
+        for (it = vec.begin(); it != vec.end(); it++){
                qDebug() << it ->number << it->name << it->course1 << it->course2 <<endl;
             }
 
