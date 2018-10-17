@@ -97,23 +97,28 @@ ScoreSorter::ScoreSorter(QString dataFile){
     QString dataFile="D:/Dev/homework/All-homework/homework/homework02/data.txt";
 }
 
-
+ // 自定义qDebug,使其输出文本文件
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-    // 自定义qDebug
-    QFile f(dataFile);
-    if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QDebug << QString << "文件读取失败。" << endl;
-        return -1;
-    }
-    QDebug().noquote().nospace()<<"开始读入data数据"<<dataFile;
-    while (!file.atEnd()) {
-              QByteArray line = file.readLine();
-              process_line(line);
-              QDebug()<<line;
+    QByteArray localMsg = msg.toLocal8Bit();
+          switch (type) {
+          case QtDebugMsg:
+              fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+              break;
+          case QtInfoMsg:
+              fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+              break;
+          case QtWarningMsg:
+              fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+              break;
+          case QtCriticalMsg:
+              fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+              break;
+          case QtFatalMsg:
+              fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+              abort();
+          }
 }
-    QDebug()<<"data数据读入完成。"
 
 int main()
 {
