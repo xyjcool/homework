@@ -42,14 +42,17 @@ enum SortKind{
 };
 }
 
-
+//使用结构体存放成绩信息的数据类型
 typedef struct{
-    // 请补全结构定义
     int number;
+    QString name;
+    QVector <int> score;
 } studData;
 
-QDebug operator<< (QDebug d, const studData &data) {
-    // 请补全运算符重载函数，使其可以直接输出studData结构
+// 运算符重载函数，可以直接输出studData结构
+QDebug operator << (QDebug d, const studData &data) {
+    QDebugStateSaver saver (d);
+    d.nospace() << '[' << data.name << " " << data.number << " " << data.score <<  ']';
     return d;
 }
 
@@ -82,22 +85,35 @@ class ScoreSorter
 {
 public:
     ScoreSorter(QString dataFile);
-    // ...
+
     // 请补全该类，使其实现上述要求
+
+
     // ...
 }
 
-// 请补全
+// 构造函数定义-分配资源给文件名
 ScoreSorter::ScoreSorter(QString dataFile){
+    QString dataFile="D:/Dev/homework/All-homework/homework/homework02/data.txt";
 }
 
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     // 自定义qDebug
-
-
+    QFile f(dataFile);
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QDebug << QString << "文件读取失败。" << endl;
+        return -1;
+    }
+    QDebug().noquote().nospace()<<"开始读入data数据"<<dataFile;
+    while (!file.atEnd()) {
+              QByteArray line = file.readLine();
+              process_line(line);
+              QDebug()<<line;
 }
+    QDebug()<<"data数据读入完成。"
 
 int main()
 {
