@@ -42,16 +42,14 @@ enum SortKind{
 
 //使用结构体存放成绩信息的数据类型
 typedef struct{
-    QString number;
-    QString name;
-    QVector <int> score;
+    QStringList stu;
 } studData;
-studData stu;
-studData title;
+
+
 // 运算符重载函数，可以直接输出studData结构
 QDebug operator << (QDebug d, const studData &data) {
-    QDebugStateSaver saver (d);
-    d.nospace() << data.name << "\t" << data.number << "\t" << data.score  ;
+    for(int i=0;i<data.stu.size();i++)
+            d.noquote().nospace()<<QString(data.stu.at(i))<<"\t" ;
     return d;
 }
 
@@ -64,25 +62,12 @@ private:
     int currentColumn;
 };
 
-//重载函数，把学号和姓名的比较与成绩分开
+//重载函数，用qlist把整体排序规则定好
 bool myCmp::operator()(const studData &d1, const studData &d2)
 {
     bool result = false;
     quint32 sortedColumn = 0x00000001<<currentColumn;
-    switch (sortedColumn) {
-
-    case SK::col01:
-        result=( d1.number > d2.number);
-        break;
-
-    case SK::col02:
-        result= (d1.name > d2.name);
-        break;
-
-    default:
-        result=( d1.score > d2.score);
-
-    }
+    result=(d1.stu.at(currentColumn)>d2.stu.at(currentColumn));
     return result;
 
 }
@@ -97,55 +82,51 @@ public:
 
 private:
     QString tempFile;
-    studData stu;
-
-    studData title; //数据表头
-
+    QList<studData> data;
+    studData header ;          //数据表头
 
 };
 
 void ScoreSorter::readFile(){
 
     QFile file(tempFile);
-    if (!file.open(QIODevice::ReadOnly|QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly|QIODevice::Text)){
         qDebug()<<"文件打开失败。\n"<<endl;
-    QString titile1(file.readLine());
-    title.stu = titile1.split(" ", QString::SkipEmptyParts);//去除末尾的\n
-    if((title.stu).last() == "\n") title.stu.removeLast();
-    studData  Lastdata;
-    while(!file.atEnd())
-    {
-        QByteArray line=file.readLine();
-        QString str(line);
-        Lastdata.stu = str.split(" ", QString::SkipEmptyParts);
-        //去末尾'\n'
-        // 如果是空 qlist()  则摒弃,否则添加到 data
-        if((Lastdata.stu).last() == "\n")
-            Lastdata.stu.removeLast();
-        if(Lastdata.stu.size()==0)
-            continue;
-        stu.append(Lastdata);
-    }
-    file.close();
 
-}
+    }
+
+    //把表头和数据的读入分开，存入不同的位置，方便后期排序（解决了表头不需要排序的问题）
+    QString header1(file.readLine());
+        header.stu = header1.split(" ", QString::SkipEmptyParts);//去除末尾的\n
+        if((header.stu).last() == "\n") header.stu.removeLast();
+        studData  Lastdata;
+        while(!file.atEnd())
+        {
+            QByteArray line=file.readLine();
+            QString str(line);
+            Lastdata.stu = str.split(" ", QString::SkipEmptyParts);//去末尾'\n' 如果是空 qlist()  则摒弃,否则添加到 data
+            if((Lastdata.stu).last() == "\n")
+                Lastdata.stu.removeLast();
+            if(Lastdata.stu.size()==0)
+                continue;
+            data.append(Lastdata);
+    }
+        file.close();
+    }
+
 
 void ScoreSorter::doSort(){
 
-    for(int i=0;i<32;i++)
+    for(int i=0;i<header.stu.size();i++)
         {
             myCmp cmp(i);
-            switch (i) {
-                    case 0:
-                        std::sort(stu.name.begin(),stu.name.end(), cmp );
-                        break;
-                    case 1:
-                         std::sort(stu.number.begin(),stu.number.end(), cmp );break;
-                    default:
-                        std::sort(stu.score.begin(),stu.score.end(), cmp );
-            }
-            QDebug()<<"排序后输出，当前排序第"<<i+1<<"列";
-            QDebug()<<stu;
+            std::sort(data.begin(),data.end(),cmp);
+            qDebug()<<"排序后输出，当前排序第"<<i+1<<"列";
+            //单独输出表头
+            qDebug()<<"\t"<<(header);
+            //输出数据
+            for(int i=0;i<data.size();i++)
+                qDebug()<<data.at(i);
             qDebug()<<"-----------------------------------------------------------------------\n";
         }
 }
@@ -160,7 +141,7 @@ ScoreSorter::ScoreSorter(QString dataFile){
  // 自定义qDebug,使其输出文本文件
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
-   QFile file("sorter_data.txt");
+   QFile file("sort_data.txt");
    file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text );
    QTextStream out(&file);
    out << msg  << endl;
