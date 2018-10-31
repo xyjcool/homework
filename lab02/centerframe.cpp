@@ -104,30 +104,12 @@ void CenterFrame::createUserCommandArea()
     connect(btnTriangle,&QPushButton::clicked,
             this,&CenterFrame::on_btnTriangleClicked);
 
-//    btnrhombus =new QPushButton(group);
-//        btnrhombus->setToolTip("绘制菱形");
-//        btnrhombus->setCheckable(true);
-//        btnrhombus->setIconSize(p.size());
-//        //菱形的四个顶点
-//        p.fill(BACKGROUND_COLOR);
-//        QPointF pt4(p.size().width()/2,3);
-//        QPointF pt5(3,p.size().height()/2);
-//        QPointF pt6(p.size().width()/2,p.size().height()-3);
-//        QPointF pt7(p.size().width()-3,p.size().height()/2);
-//        QVector<QPointF> ptb;
-//        ptb<<pt7<<pt4<<pt4<<pt5<<pt5<<pt6<<pt6<<pt7;
-
-//        painter.drawPolygon(ptb);
-//        btnrhombus->setIcon (QIcon(p));
-//        connect(btnrhombus,&QPushButton::clicked,
-//    this,&CenterFrame::on_btnrhombusClicked);
 
    // 菱形按钮
    btnDiamond = new QPushButton(group);
    btnDiamond->setToolTip("绘制菱形");
    btnDiamond->setCheckable(true);
    btnDiamond->setIconSize(p.size());
-
 
    p.fill(BACKGROUND_COLOR);
    //菱形的四个顶点
@@ -166,7 +148,8 @@ void CenterFrame::createUserCommandArea()
     gridLayout->addWidget(btnEllipse,0,1);
     gridLayout->addWidget(btnTriangle,1,0);
     gridLayout->addWidget(btnLine,1,1);
-    gridLayout->addWidget(btnText,2,0);
+    gridLayout->addWidget(btnDiamond,2,0);
+    gridLayout->addWidget(btnText,2,1);
     gridLayout->setMargin(3);
     gridLayout->setSpacing(3);
     group->setLayout(gridLayout);
@@ -239,6 +222,7 @@ void CenterFrame::updateButtonStatus()
     btnLine->setChecked(false);
     btnTriangle->setChecked(false);
     btnEllipse->setChecked(false);
+    btnDiamond->setChecked(false);
     btnText->setChecked(false);
     edtText->setVisible(false);
 
@@ -333,7 +317,7 @@ void CenterFrame::on_btnTriangleClicked()
     }
 }
 
-
+//绘制菱形按键响应槽函数
 void CenterFrame::on_btnDiamondClicked()
 {
     if(btnDiamond->isChecked()){
