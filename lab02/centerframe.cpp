@@ -142,14 +142,30 @@ void CenterFrame::createUserCommandArea()
     connect(btnText,&QPushButton::clicked,
             this,&CenterFrame::on_btnTextClicked);
 
+    //选择图形
+    btnPicture = new QPushButton(group);
+    btnPicture->setToolTip("选择图形");
+    btnPicture->setCheckable(true);
+    btnPicture->setIconSize(p.size());
+
+    p.fill(BACKGROUND_COLOR);
+    QImage image(":/user");
+    QRect targetRect(0,0,p.size().width(),p.size().height());
+    QRect sourceRect =image.rect();
+    painter.drawImage(targetRect,image,sourceRect);
+    btnPicture->setIcon (QIcon(p));
+    connect(btnPicture,&QPushButton::clicked,this, &CenterFrame::on_btnPictureClicked);
+
+
     // 选项Group布局
     QGridLayout *gridLayout = new QGridLayout();
     gridLayout->addWidget(btnRect,0,0);
     gridLayout->addWidget(btnEllipse,0,1);
-    gridLayout->addWidget(btnTriangle,1,0);
-    gridLayout->addWidget(btnLine,1,1);
-    gridLayout->addWidget(btnDiamond,2,0);
-    gridLayout->addWidget(btnText,2,1);
+    gridLayout->addWidget(btnTriangle,0,2);
+    gridLayout->addWidget(btnLine,1,0);
+    gridLayout->addWidget(btnDiamond,1,1);
+    gridLayout->addWidget(btnText,1,2);
+    gridLayout->addWidget(btnPicture,2,0);
     gridLayout->setMargin(3);
     gridLayout->setSpacing(3);
     group->setLayout(gridLayout);
@@ -225,6 +241,7 @@ void CenterFrame::updateButtonStatus()
     btnDiamond->setChecked(false);
     btnText->setChecked(false);
     edtText->setVisible(false);
+    //btnPicture->setChecked(false);
 
     // 然后根据设置的绘图类型重新切换按键状态
     switch (drawWidget->shapeType()) {
@@ -248,6 +265,9 @@ void CenterFrame::updateButtonStatus()
         edtText->setVisible(true);      // 使编辑框可见
         edtText->setFocus();            // 编辑框获得输入焦点
         break;
+//    case ST::Picture:
+//        btnPicture->setChecked(true);
+//        break;
     default:
         break;
     }
@@ -343,4 +363,20 @@ void CenterFrame::on_btnTextClicked()
 void CenterFrame::on_edtTextEdited(const QString &text)
 {
     drawWidget->setDrawnText(text);
+}
+
+
+//给图片绘制响应槽函数
+void CenterFrame::on_btnPictureClicked()
+{
+    if(btnPicture->isChecked()){
+
+        drawWidget->setShapeType(ST::Picture);
+        drawWidget->Picture();
+        updateButtonStatus();
+
+    }else{
+        drawWidget->setShapeType(ST::None);
+    }
+
 }
